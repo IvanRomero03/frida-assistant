@@ -6,7 +6,8 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    // provider = "sqlite"
+    provider = "cockroachdb"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -15,7 +16,7 @@ datasource db {
 }
 
 model Example {
-    id        Int      @id @default(autoincrement())
+    id        BigInt   @id @default(autoincrement())
     name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -33,6 +34,8 @@ model Account {
     refresh_token     String? // @db.Text
     access_token      String? // @db.Text
     expires_at        Int?
+    expires_in        Int?
+    ext_expires_in    Int?
     token_type        String?
     scope             String?
     id_token          String? // @db.Text
