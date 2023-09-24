@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import {format} from 'date-fns';
 
 interface MessageProps {
     message: string;
@@ -6,15 +7,22 @@ interface MessageProps {
     sentByGTP: boolean;
 }
 
-const Message: React.FC<MessageProps> = ({ message, sentByGTP }) => {
+const Message: React.FC<MessageProps> = ({ message, sentByGTP, date }) => {
 
     return (
-        <div className={clsx(
-            sentByGTP ? 'bg-blue-400 ml-40 text-white rounded-lg p-2 m-2' : 'mr-40 bg-gray-200 text-gray-900 rounded-lg p-2 m-2',
-            'my-5'
+        <div className='relative'>
+            <div className={clsx(
+                sentByGTP ? 'bg-blue-400 ml-40 text-white rounded-lg p-2 m-2' : 'mr-40 bg-gray-200 text-gray-900 rounded-lg p-2 m-2',
+                'my-6'
 
-        )}>
-            {message}
+            )}>
+                {message}
+            </div>
+            <div className={clsx('absolute top-10 text-gray-400 text-sm',
+                !sentByGTP ? 'left-2' : 'right-2',
+            )}>
+                 {format(new Date(date), 'p')}
+            </div>
         </div>
     );
 }
