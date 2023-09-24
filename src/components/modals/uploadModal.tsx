@@ -6,6 +6,7 @@ import { BsChatRight } from "react-icons/bs";
 import { Formik, Form, Field } from "formik";
 import { api } from "rbrgs/utils/api";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -15,21 +16,19 @@ interface UploadModalProps {
 type variant = "LINK" | "PDF" | "TEXT";
 
 const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
-
-   
-   
-   
-  
-
-   
-
   const [option, setOption] = useState<variant>("LINK");
   const { mutateAsync: createDocument } = api.docs.create.useMutation({});
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [filename, setFilename] = useState<string>("");
-  const {data:session} = useSession();
-    
-  const handleUpload = async ({link, text}: {link: string | undefined, text: string | undefined}) => {
+  const { data: session } = useSession();
+
+  const handleUpload = async ({
+    link,
+    text,
+  }: {
+    link: string | undefined;
+    text: string | undefined;
+  }) => {
     // upload to database using filename and appending gs://frida_file_bucket
     console.log(option, filename, link, text, inputRef.current?.files?.[0]);
     if (option == "PDF") {
@@ -55,7 +54,6 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
             userId: session?.user?.id!,
             link: `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${filename}`,
           });
-
         }
       });
     } else if (option == "LINK") {
@@ -66,9 +64,12 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
         link: link,
       });
     } else if (option == "TEXT" && text != "") {
-      createDocument({
+      const res = await axios.post("http://localhost:5000/api/analyze", {
+        text,
+      });
+      await createDocument({
         name: "test",
-        text: text!, 
+        text: text!,
         userId: session?.user?.id!,
         link: "",
       });
@@ -103,11 +104,11 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
 
         <div className="flex w-full pr-5">
           <Formik
-            initialValues={{ link: "", text: "", file: ""}}
+            initialValues={{ link: "", text: "", file: "" }}
             onSubmit={async (values, actions) => {
               console.log(values);
               actions.setSubmitting(true);
-              handleUpload({link: values.link, text: values.text });
+              handleUpload({ link: values.link, text: values.text });
               // await createDocument({ ...values, name: "test" });
               // wait 500ms before submitting
               actions.setSubmitting(false);
@@ -184,4 +185,3 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
 };
 
 export default UploadModal;
-                                    
