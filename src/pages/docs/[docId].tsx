@@ -47,6 +47,31 @@ export default function Doc() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const doc = api.docs.getOne.useQuery({ id: docId });
 
+  const [audioUrl, setAudioUrl] = useState();
+  const { data } = api.textToSpeech.talk.useQuery({ text: doc.data?.text || "No info found" })
+
+  const playAudio = () => {
+    const audioBlob = base64ToBlob(data);
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audioElement = new Audio(audioUrl);
+    audioElement.play();
+  };
+
+  // Function to convert base64 to Blob
+  const base64ToBlob = (data: any) => {
+    const byteCharacters = atob(data);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'audio/mpeg' }); // Adjust the type as per your audio format
+  };
+
+
+
   // const docData = doc.data;
   const docData = {
     name: doc.data?.name,
@@ -68,10 +93,13 @@ export default function Doc() {
   //   // await new Promise((resolve) => setTimeout(resolve, 1));
   //   return paragraph;
   // };
+  
+  paragraphs.filter((paragraph) => paragraph.length === 1 && (paragraph[0] === " " || paragraph[0] === "") || paragraph.length === 0);
 
   const summaries = paragraphs?.map((paragraph) => {
     // call to api to summarize paragraph
     paragraph.split(" ").forEach((word) => {
+      if (word.length < 3) return;
       if (wordCount[word]) {
         wordCount[word]++;
       } else {
@@ -100,7 +128,7 @@ export default function Doc() {
       >
         <h3 className="font-bold">Back</h3>
       </Link>
-      <div className="flex flex-col items-center h-screen bg-gray-100">
+      <div className="flex flex-col items-center bg-gray-100">
         <h1 className="my-8 text-3xl font-bold"> {docData?.name}</h1>
         <div className="flex w-full flex-row justify-start">
           <div className="flex max-w-4xl flex-col justify-evenly">
@@ -163,6 +191,7 @@ export default function Doc() {
             Go to website
           </a>
         )}
+        <button className="bg-gray-200 py-1 px-3 rounded-md mt-3" onClick={playAudio}>Play Audio</button>
       </div>
     </>
   );

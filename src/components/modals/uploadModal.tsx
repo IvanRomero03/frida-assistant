@@ -30,11 +30,10 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
     text: string | undefined;
   }) => {
     // upload to database using filename and appending gs://frida_file_bucket
-    console.log(option, filename, link, text, inputRef.current?.files?.[0]);
     if (option == "PDF") {
       if (!inputRef.current?.files?.[0]) return;
       const file = inputRef.current?.files?.[0];
-
+      console.log("Uploading file");
       inputRef.current.value = "";
       const formData = new FormData();
       formData.append("file", file);
@@ -46,34 +45,54 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
         body: formData,
       });
 
-      void res.json().then((data) => {
+      console.log(res);
+
+      void res.json().then(async (data) => {
         if (data.success) {
-          createDocument({
-            name: filename,
-            text: "",
-            userId: session?.user?.id!,
-            link: `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${filename}`,
-            keywords: [],
-            relevant_sentences: [],
-          });
+          console.log("Scrappign");
+
+          const gcs_pdf_path = `https://storage.googleapis.com/frida_file_bucket/${filename}`;
+          const res = await axios
+            .post("http://localhost:5000/api/pdf_scrapper", {
+              gcs_pdf_path,
+            })
+            .then((res) => {
+              console.log(res.data);
+              createDocument({
+                name: filename,
+                text: res.data.text,
+                userId: session?.user?.id!,
+                link: gcs_pdf_path,
+                keywords: [],
+                relevant_sentences: [],
+              });
+            });
         }
       });
     } else if (option == "LINK") {
-      createDocument({
-        name: "test",
-        text: "",
-        userId: session?.user?.id!,
-        link: link,
-        keywords: [],
-        relevant_sentences: [],
-      });
+      const url = link;
+      const res = await axios
+        .post("http://localhost:5000/api/web_scrapper", {
+          url,
+        })
+        .then((res) => {
+          console.log(res.data);
+          createDocument({
+            name: link!,
+            text: res.data.text,
+            userId: session?.user?.id!,
+            link: link,
+            keywords: [],
+            relevant_sentences: [],
+          });
+        });
     } else if (option == "TEXT" && text != "") {
       const res = await axios.post("http://localhost:5000/api/analyze", {
         text,
       });
-      console.log(res.data);
+
       await createDocument({
-        name: "test",
+        name: "Input text",
         text: text!,
         userId: session?.user?.id!,
         link: "",
@@ -85,6 +104,9 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
       });
       console.log(res.data);
     }
+
+    setFilename("");
+    setOption("LINK");
   };
 
   return (
@@ -123,6 +145,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
               // await createDocument({ ...values, name: "test" });
               // wait 500ms before submitting
               actions.setSubmitting(false);
+              values.link = "";
+              values.text = "";
             }}
           >
             {({ isSubmitting }) => (

@@ -22,7 +22,7 @@ export const uploadFile = async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable({ fileWriteStreamHandler: uploadStream });
 
     form.parse(req, () => {
-        res.status(200).json("File upload complete");
+        res.status(200).json({success:true});
     });
 };
 

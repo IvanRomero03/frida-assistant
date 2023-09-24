@@ -118,3 +118,15 @@ model Message {
 
     @@index([text])
 }
+
+// model TextSegment {
+//   id        String    @id
+//   userId    String?
+//   text      String?
+//   emb_id    String
+//   createdAt DateTime  @default(now())
+//   id_parent String
+//   DocSource DocSource @relation(fields: [id_parent], references: [id], onDelete: Cascade)
+
+//   @@index([id, id_parent], map: "TextSegment_parent_DocSource_idx")
+// }
