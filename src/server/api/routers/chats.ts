@@ -24,7 +24,7 @@ export const chatsRouter = createTRPCRouter({
 
   create: protectedProcedure
     .input(z.object({ userId: z.string(), name: z.string() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db.chat.create({
         data: {
           name: input.name,
@@ -35,7 +35,7 @@ export const chatsRouter = createTRPCRouter({
 
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.db.chat.delete({
         where: {
           id: input.id,

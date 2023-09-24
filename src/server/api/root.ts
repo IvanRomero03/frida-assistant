@@ -1,5 +1,5 @@
 import { exampleRouter } from "rbrgs/server/api/routers/example";
-import { chatsRouter } from "./routers/chatsRouter";
+import { chatsRouter } from "./routers/chats";
 import { docsRouter } from "./routers/docs";
 import { createTRPCRouter } from "rbrgs/server/api/trpc";
 
