@@ -23,13 +23,13 @@ export const docsRouter = createTRPCRouter({
     }),
 
   create: protectedProcedure
-    .input(z.object({ userId: z.string(), name: z.string(), text: z.string() }))
-    .query(({ ctx, input }) => {
+    .input(z.object({ name: z.string(), text: z.string() }))
+    .mutation(({ ctx, input }) => {
       return ctx.db.docSource.create({
         data: {
           name: input.name,
           text: input.text,
-          userId: input.userId,
+          userId: ctx.session.user.id,
         },
       });
     }),

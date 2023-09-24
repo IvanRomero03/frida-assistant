@@ -1,30 +1,59 @@
-'use client'
+"use client";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 
 interface InputProps {
-    id: string;
-    label: string;
-    placeholder?: string;
-    type?: string;
-    required?: boolean;
-    register: UseFormRegister<FieldValues>;
-    textArea?: boolean;
-    errors: FieldErrors
+  id: string;
+  label: string;
+  placeholder?: string;
+  type?: string;
+  required?: boolean;
+  register?: UseFormRegister<FieldValues>;
+  textArea?: boolean;
+  errors: FieldErrors;
 }
 
-const Input: React.FC<InputProps> = ({ id, label, placeholder, type, required, register, textArea, errors }) => {
-    return (
-        <>
-            <label className="font-semibold mt-6 mr-3">
-                {label}
-            </label>
+const Input: React.FC<InputProps> = ({
+  id,
+  label,
+  placeholder,
+  type,
+  required,
+  register,
+  textArea,
+  errors,
+}) => {
+  return (
+    <>
+      <label className="mr-3 mt-6 font-semibold">{label}</label>
 
-            {textArea ? (
-                <textarea id={id} {...register(id, { required })} className="bg-white ring-1 w-5/6 pr-10 w-full outline-blue-400 rounded-lg bg-quaternary p-1 focus:outline-none  h-36 align-text-top" />
-            ) : (
-                <input id={id} {...register(id, { required })} className="bg-white ring-1 w-5/6 pr-10 outline-blue-400 inset-1 rounded-lg bg-quaternary p-1 focus:outline-none " />
-            )}
-        </>
-    )
-}
+      {textArea ? (
+        register ? (
+          <textarea
+            id={id}
+            {...register(id, { required })}
+            className="bg-quaternary m-8 h-36 w-5/6 w-full rounded-lg bg-white p-1 pr-10 align-text-top  outline-blue-400 ring-1 focus:outline-none"
+          />
+        ) : (
+          <textarea
+            id={id}
+            placeholder={placeholder}
+            className="bg-quaternary m-8 h-36 w-5/6 w-full rounded-lg bg-white p-1 pr-10 align-text-top  outline-blue-400 ring-1 focus:outline-none"
+          />
+        )
+      ) : register ? (
+        <input
+          id={id}
+          {...register(id, { required })}
+          className="bg-quaternary inset-1 w-5/6 rounded-lg bg-white p-1 pr-10 outline-blue-400 ring-1 focus:outline-none "
+        />
+      ) : (
+        <input
+          id={id}
+          placeholder={placeholder}
+          className="bg-quaternary inset-1 w-5/6 rounded-lg bg-white p-1 pr-10 outline-blue-400 ring-1 focus:outline-none "
+        />
+      )}
+    </>
+  );
+};
 export default Input;
