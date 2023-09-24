@@ -10,7 +10,9 @@ const Chat = () => {
             <div className="text-gray-500">
                 Chat bot for queries. Find, summarize, anilize information and more.
             </div>
-            <SearchBar />
+            <div className="fixed w-10/12  bottom-10">
+                <SearchBar />
+            </div>
         </div>
     )
 }

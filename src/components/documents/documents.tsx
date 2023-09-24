@@ -15,10 +15,10 @@ const Documents = () => {
                     </div>
                 </div>
 
-                <UploadButton />
+                <UploadButton modal />
             </div>
 
-            <SearchBar />
+            <SearchBar search />
             <DocGrid />
 
         </div>
