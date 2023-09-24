@@ -29,7 +29,7 @@ export const docsRouter = createTRPCRouter({
         data: {
           name: input.name,
           text: input.text,
-          userId: input.userId,
+          userId: ctx.session.user.id,
           link: input.link,
         },
       });
