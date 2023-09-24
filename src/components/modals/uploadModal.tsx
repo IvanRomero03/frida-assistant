@@ -1,12 +1,9 @@
-import { FieldValues, useForm } from "react-hook-form";
 import Modal from "./modal";
-import Input from "./input";
-import { useCallback, useState } from "react";
+import { useState, useRef } from "react";
 import Button from "../dashboard/Button";
 import { SlDocs } from "react-icons/sl";
 import { BsChatRight } from "react-icons/bs";
-import UploadButton from "../documents/uploadButton";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import { api } from "rbrgs/utils/api";
 
 interface UploadModalProps {
@@ -19,8 +16,51 @@ type variant = "LINK" | "PDF" | "TEXT";
 const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
   const [option, setOption] = useState<variant>("LINK");
   const { mutateAsync: createDocument } = api.docs.create.useMutation({});
-  const handleUpload = () => {
-    console.log("upload");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [filename, setFilename] = useState<string>("");
+    
+  const handleUpload = async ({link, text}: {link: string?, text: string?}) => {
+    // upload to database using filename and appending gs://frida_file_bucket
+    if (option == "PDF") {
+      if (!inputRef.current?.files?.[0]) return;
+      const file = inputRef.current?.files?.[0];
+
+      inputRef.current.value = "";
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // upload to database using filename and appending gs://frida_file_bucket
+
+      const res = await fetch("../../api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      void res.json().then((data) => {
+        if (data.success) {
+          createDocument({
+            name: filename,
+            text: "",
+            userId: session?.user?.id!,
+            link: `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${filename}`,
+          });
+        }
+      });
+    } else if (option == "LINK") {
+      createDocument({
+        name: "test",
+        text: "",
+        userId: session?.user?.id!,
+        link: link,
+      });
+    } else if (option == "TEXT" && inputText != "") {
+      createDocument({
+        name: "test",
+        text: text, 
+        userId: session?.user?.id!,
+        link: "",
+      });
+    }
   };
 
   return (
@@ -55,7 +95,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
             onSubmit={async (values, actions) => {
               console.log(values);
               actions.setSubmitting(true);
-              await createDocument({ ...values, name: "test" });
+              handleUpload({link: link, text: text });
+              // await createDocument({ ...values, name: "test" });
               // wait 500ms before submitting
               actions.setSubmitting(false);
             }}
@@ -77,7 +118,28 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
                       </>
                     )}
 
-                    {option == "PDF" && <div>upload file</div>}
+                    {option == "PDF" && (
+                      <div className="flex flex-row items-center gap-4">
+                        <label
+                          for="file_upload"
+                          className="flex h-8 w-fit flex-row rounded bg-gray-400 px-4 py-1 font-bold text-white hover:bg-gray-500"
+                        >
+                          Select File
+                        </label>
+                        <input
+                          id="file_upload"
+                          className="hidden"
+                          type="file"
+                          ref={inputRef}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            setFilename(file.name);
+                          }}
+                        />
+                        <p className="font-serif">{filename}</p>
+                      </div>
+                    )}
 
                     {option == "TEXT" && (
                       <div>

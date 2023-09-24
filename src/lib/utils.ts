@@ -15,7 +15,7 @@ const uploadStream = (file: formidable.File) => {
     return pass;
 };
 
-export const method3 = async (req: NextApiRequest, res: NextApiResponse) => {
+export const uploadFile = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -25,3 +25,17 @@ export const method3 = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(200).json("File upload complete");
     });
 };
+
+export const downloadFile = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { filename } = req.query;
+
+    if (typeof filename !== "string") {
+        res.status(400).json("Invalid filename");
+        return;
+    }
+
+    const contents = await gcs.downloadFile(filename);
+
+    res.status(200).send(contents[0]);
+}
+
