@@ -3,7 +3,7 @@ import {format} from 'date-fns';
 
 interface MessageProps {
     message: string;
-    date: string;
+    date: Date;
     sentByGTP: boolean;
 }
 
@@ -21,7 +21,7 @@ const Message: React.FC<MessageProps> = ({ message, sentByGTP, date }) => {
             <div className={clsx('absolute top-10 text-gray-400 text-sm',
                 !sentByGTP ? 'left-2' : 'right-2',
             )}>
-                 {format(new Date(date), 'p')}
+                 {date && format(new Date(date), 'p')}
             </div>
         </div>
     );
