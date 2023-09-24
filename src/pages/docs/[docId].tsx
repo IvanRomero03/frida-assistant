@@ -93,10 +93,13 @@ export default function Doc() {
   //   // await new Promise((resolve) => setTimeout(resolve, 1));
   //   return paragraph;
   // };
+  
+  paragraphs.filter((paragraph) => paragraph.length === 1 && (paragraph[0] === " " || paragraph[0] === "") || paragraph.length === 0);
 
   const summaries = paragraphs?.map((paragraph) => {
     // call to api to summarize paragraph
     paragraph.split(" ").forEach((word) => {
+      if (word.length < 3) return;
       if (wordCount[word]) {
         wordCount[word]++;
       } else {
@@ -125,7 +128,7 @@ export default function Doc() {
       >
         <h3 className="font-bold">Back</h3>
       </Link>
-      <div className="flex flex-col items-center h-screen bg-gray-100">
+      <div className="flex flex-col items-center bg-gray-100">
         <h1 className="my-8 text-3xl font-bold"> {docData?.name}</h1>
         <div className="flex w-full flex-row justify-start">
           <div className="flex max-w-4xl flex-col justify-evenly">

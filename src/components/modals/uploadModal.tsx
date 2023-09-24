@@ -89,7 +89,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
       
     } else if (option == "TEXT" && text != "") {
       const res = await axios
-        .post("http://localhost:5001/api/analyze", {
+        .post("http://localhost:5000/api/analyze", {
           text,
         })
         .then((res) => {
