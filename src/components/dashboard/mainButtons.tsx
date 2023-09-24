@@ -17,6 +17,7 @@ const MainButtons: React.FC<buttonProps> = ({ variant, onClick }) => {
             <div className='flex mx-auto bg-white p-1 rounded-md shadow-md'>
                 <Button label="My documents" icon={SlDocs} selected={variant == "DOCS"} onClick={onClick} />
                 <Button label="Chat Bot" icon={BsChatRight} selected={variant == "CHAT"} onClick={onClick} />
+              
             </div>
 
         </div>
