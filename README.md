@@ -20,14 +20,19 @@ If you are not familiar with the different technologies used in this project, pl
 Some of the features included in this project are:
 
 ### Authentication
+Using Azure AD for user authentication.
 
 ### Web and document scraping
+Using python scripts and APIs to retrieve text from web links and documents.
 
 ### Semantic search
+Using embeddings to analyze texts and do a semantic search.
 
 ### Context injection
+Analyze large texts of information using vector and embedding technologies, also taking advantage of OpenAI chats.
 
 ### Text to speech
+Implemented AWS Polly to transform text into speech for more users to use the platform.
 
 
 # Proyect structure
