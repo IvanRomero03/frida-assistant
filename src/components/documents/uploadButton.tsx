@@ -28,8 +28,6 @@ const UploadButton: React.FC<UploadButtonProps> = ({ modal, handleUpload }) => {
                     Upload
                 </div>
 
-
-
             </button>
         </>
     )

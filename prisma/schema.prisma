@@ -103,6 +103,7 @@ model Chat {
 model Message {
     id        String      @id @default(cuid())
     chatId    String
+    fromGPT   Boolean     @default(false)
     chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
     text      String
     createdAt DateTime @default(now())
