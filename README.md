@@ -34,6 +34,7 @@ Analyze large texts of information using vector and embedding technologies, also
 ### Text to speech
 Implemented AWS Polly to transform text into speech for more users to use the platform.
 
+#### Some of the features implemented depend on Python services. These services are stored in this repo: [Frida Assistant Services](https://github.com/IvanRomero03/frida-assistant-services)
 
 # Proyect structure
 
