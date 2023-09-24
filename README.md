@@ -37,5 +37,5 @@ Some of the features included in this project are:
 | --- | --- | --- |
 | Iván Romero | [@IvanRomero03](https://github.com/IvanRomero03) | i.wells.ar@gmail.com |
 | Alejandra Coeto | [@Ale-Coeto](https://github.com/AleCoeto) | alecoeto@hotmail.com|
-| Diego Hernández |[@Diego-HC](https://github.com/Diego-HC) | |
+| Diego Hernández |[@Diego-HC](https://github.com/Diego-HC) | diego.hdz.cadena@gmail.com|
 | Alexis Chapa |[@Chapa-1810](https://github.com/Chapa-1810) | |
