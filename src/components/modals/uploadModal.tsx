@@ -53,7 +53,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
 
           const gcs_pdf_path = `https://storage.googleapis.com/frida_file_bucket/${filename}`;
           const res = await axios
-            .post("http://localhost:5000/api/pdf_scrapper", {
+            .post("https://bd69-54-205-129-33.ngrok.io/api/pdf_scrapper", {
               gcs_pdf_path,
             })
             .then((res) => {
@@ -62,17 +62,17 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
                 name: filename,
                 text: res.data.text,
                 userId: session?.user?.id!,
-                link:gcs_pdf_path,
+                link: gcs_pdf_path,
+                keywords: [],
+                relevant_sentences: [],
               });
             });
-
-          
         }
       });
     } else if (option == "LINK") {
       const url = link;
       const res = await axios
-        .post("http://localhost:5000/api/web_scrapper", {
+        .post("https://bd69-54-205-129-33.ngrok.io/api/web_scrapper", {
           url,
         })
         .then((res) => {
@@ -82,31 +82,34 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
             text: res.data.text,
             userId: session?.user?.id!,
             link: link,
+            keywords: [],
+            relevant_sentences: [],
           });
         });
-
-
-      
     } else if (option == "TEXT" && text != "") {
-      const res = await axios
-        .post("http://localhost:5000/api/analyze", {
+      const res = await axios.post(
+        "https://bd69-54-205-129-33.ngrok.io/api/analyze",
+        {
           text,
-        })
-        .then((res) => {
-          console.log(res.data);
-        });
+        },
+      );
 
       await createDocument({
         name: "Input text",
         text: text!,
         userId: session?.user?.id!,
         link: "",
+        summary: res.data.summary,
+        keywords: res.data.keywords,
+        main_emb: res.data.main_emb,
+        relevant_sentences: res.data.relevant_sentences,
+        ids: res.data.ids,
       });
+      console.log(res.data);
     }
 
     setFilename("");
     setOption("LINK");
-
   };
 
   return (
@@ -169,7 +172,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
                     {option == "PDF" && (
                       <div className="flex flex-row items-center gap-4">
                         <label
-                          for="file_upload"
+                          htmlFor="file_upload"
                           className="flex h-8 w-fit flex-row rounded bg-gray-400 px-4 py-1 font-bold text-white hover:bg-gray-500"
                         >
                           Select File
