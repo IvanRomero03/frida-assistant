@@ -65,15 +65,20 @@ model VerificationToken {
 }
 
 model DocSource {
-  id        String   @id @default(cuid())
-  userId    String
-  name      String
-  text      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  fileLink  String?
-  webLink   String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                 String        @id @default(cuid())
+  userId             String
+  name               String
+  text               String
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  fileLink           String?
+  webLink            String?
+  main_emb           String?
+  summary            String?
+  keywords           String[]
+  relevant_sentences String[]
+  user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TextSegment        TextSegment[]
 
   @@index([name])
 }
@@ -100,4 +105,16 @@ model Message {
   chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
   @@index([text])
+}
+
+model TextSegment {
+  id        String    @id
+  userId    String?
+  text      String?
+  emb_id    String
+  createdAt DateTime  @default(now())
+  id_parent String
+  DocSource DocSource @relation(fields: [id_parent], references: [id], onDelete: Cascade)
+
+  @@index([id, id_parent], map: "TextSegment_parent_DocSource_idx")
 }
