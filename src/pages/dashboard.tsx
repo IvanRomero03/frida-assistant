@@ -6,7 +6,6 @@ import DocGrid from "rbrgs/components/documents/docGrid";
 import Documents from "rbrgs/components/documents/documents";
 import { useCallback, useState } from "react";
 
-type variant = "DOCS" | "CHAT"
 
 const Dashboard: NextPage = () => {
     const [variant, setSelected] = useState("DOCS");
