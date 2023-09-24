@@ -14,9 +14,12 @@ const DocGrid = ({ input }: { input: string }) => {
 
   useEffect(() => {
     const getIds = async () => {
-      const res = await axios.post("http://localhost:5000/api/get_search", {
-        query: String(input),
-      });
+      const res = await axios.post(
+        "https://bd69-54-205-129-33.ngrok.io/api/get_search",
+        {
+          query: String(input),
+        },
+      );
       setIds(res.data.ids);
     };
     getIds();

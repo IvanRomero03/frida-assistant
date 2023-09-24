@@ -53,7 +53,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
 
           const gcs_pdf_path = `https://storage.googleapis.com/frida_file_bucket/${filename}`;
           const res = await axios
-            .post("http://localhost:5000/api/pdf_scrapper", {
+            .post("https://bd69-54-205-129-33.ngrok.io/api/pdf_scrapper", {
               gcs_pdf_path,
             })
             .then((res) => {
@@ -72,7 +72,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
     } else if (option == "LINK") {
       const url = link;
       const res = await axios
-        .post("http://localhost:5000/api/web_scrapper", {
+        .post("https://bd69-54-205-129-33.ngrok.io/api/web_scrapper", {
           url,
         })
         .then((res) => {
@@ -87,9 +87,12 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
           });
         });
     } else if (option == "TEXT" && text != "") {
-      const res = await axios.post("http://localhost:5000/api/analyze", {
-        text,
-      });
+      const res = await axios.post(
+        "https://bd69-54-205-129-33.ngrok.io/api/analyze",
+        {
+          text,
+        },
+      );
 
       await createDocument({
         name: "Input text",
@@ -169,7 +172,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
                     {option == "PDF" && (
                       <div className="flex flex-row items-center gap-4">
                         <label
-                          for="file_upload"
+                          htmlFor="file_upload"
                           className="flex h-8 w-fit flex-row rounded bg-gray-400 px-4 py-1 font-bold text-white hover:bg-gray-500"
                         >
                           Select File

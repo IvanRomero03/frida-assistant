@@ -32,9 +32,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
     // });
     // @ts-ignore
     setMessages([...messages, input]);
-    const asd = await axios.post("http://localhost:5000/api/chatbot", {
-      query: input,
-    });
+    const asd = await axios.post(
+      "https://bd69-54-205-129-33.ngrok.io/api/chatbot",
+      {
+        query: input,
+      },
+    );
     setInput("");
     console.log(asd.data.response);
     // @ts-ignore
@@ -47,7 +50,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   useEffect(() => {
     const a = async () => {
-      const asd = await axios.post("http://localhost:5000/api/chatbot_reset");
+      const asd = await axios.post(
+        "https://bd69-54-205-129-33.ngrok.io/api/chatbot_reset",
+      );
       console.log(asd.data.response);
     };
     a();
