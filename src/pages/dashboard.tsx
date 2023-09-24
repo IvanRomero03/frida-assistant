@@ -51,7 +51,6 @@ const Dashboard: NextPage = () => {
       <div className="flex h-screen w-full overflow-hidden bg-gray-100">
         <PromptHistory handleClick={selectChat} />
 
-<<<<<<< HEAD
         <div className="mt-32 h-full w-full pl-10">
           {variant == "DOCS" ? (
             <Documents />
@@ -64,27 +63,3 @@ const Dashboard: NextPage = () => {
   );
 };
 export default Dashboard;
-=======
-
-
-    return (
-        <>
-            <MainButtons variant={variant} onClick={chatName == "" ? handleNewChat : toggleVariant} />
-            <button className="ml-4 mt-4 fixed w-36 z-50 hover:bg-gray-200 flex p-2 ring-1 ring-gray-500 rounded-sm mb-6 " onClick={handleNewChat} >
-                <AiOutlinePlus className="self-center mr-2 z-1" />
-                <div>  New Chat </div>
-            </button>
-
-            <div className="bg-gray-100 h-screen w-full flex overflow-hidden">
-                <PromptHistory handleClick={selectChat} />
-
-                <div className="h-full pl-10 mt-32 w-full">
-                    {variant == 'DOCS' ? <Documents /> : <Chat chatId={chatId} chatName={chatName} />}
-                </div>
-
-            </div>
-        </>
-    )
-}
-export default Dashboard
->>>>>>> origin/main
