@@ -53,6 +53,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
             text: "",
             userId: session?.user?.id!,
             link: `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${filename}`,
+            keywords: [],
+            relevant_sentences: [],
           });
         }
       });
@@ -62,17 +64,26 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
         text: "",
         userId: session?.user?.id!,
         link: link,
+        keywords: [],
+        relevant_sentences: [],
       });
     } else if (option == "TEXT" && text != "") {
       const res = await axios.post("http://localhost:5000/api/analyze", {
         text,
       });
+      console.log(res.data);
       await createDocument({
         name: "test",
         text: text!,
         userId: session?.user?.id!,
         link: "",
+        summary: res.data.summary,
+        keywords: res.data.keywords,
+        main_emb: res.data.main_emb,
+        relevant_sentences: res.data.relevant_sentences,
+        ids: res.data.ids,
       });
+      console.log(res.data);
     }
   };
 

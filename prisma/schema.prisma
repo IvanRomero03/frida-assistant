@@ -1,103 +1,120 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "cockroachdb"
-  url      = env("DATABASE_URL")
+    provider = "cockroachdb"
+    url      = env("DATABASE_URL")
 }
 
 model Example {
-  id        BigInt   @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        BigInt   @id @default(autoincrement())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  @@index([name])
+    @@index([name])
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  expires_in        Int?
-  ext_expires_in    Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    expires_in        Int?
+    ext_expires_in    Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+    @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String      @id @default(cuid())
-  name          String?
-  email         String?     @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  Chats         Chat[]
-  DocSources    DocSource[]
-  sessions      Session[]
+    id            String      @id @default(cuid())
+    name          String?
+    email         String?     @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    Chats         Chat[]
+    DocSources    DocSource[]
+    sessions      Session[]
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+    identifier String
+    token      String   @unique
+    expires    DateTime
 
-  @@unique([identifier, token])
+    @@unique([identifier, token])
+}
+
+model TextSegment {
+    id               String    @id @default(cuid())
+    userId           String?
+    text             String?
+    emb_id           String
+    createdAt        DateTime  @default(now())
+    id_parent        String
+    parent_DocSource DocSource @relation(fields: [id_parent], references: [id], onDelete: Cascade)
+
+    @@index([id, id_parent], name: "TextSegment_parent_DocSource_idx")
 }
 
 model DocSource {
-  id        String   @id @default(cuid())
-  userId    String
-  name      String
-  text      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  fileLink  String?
-  webLink   String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                 String        @id @default(cuid())
+    userId             String
+    name               String
+    text               String
+    createdAt          DateTime      @default(now())
+    updatedAt          DateTime      @updatedAt
+    fileLink           String?
+    webLink            String?
+    user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    segments           TextSegment[]
+    keywords           String[]
+    relevant_sentences String[]
+    summary            String?
+    main_emb           String?
 
-  @@index([name])
+    @@index([name], name: "DocSource_name_idx")
 }
 
 model Chat {
-  id        String    @id @default(cuid())
-  userId    String
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages  Message[]
+    id        String    @id @default(cuid())
+    userId    String
+    name      String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    messages  Message[]
 
-  @@index([name])
+    @@index([name])
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  chatId    String
-  text      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  fromGPT   Boolean  @default(false)
-  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    id        String   @id @default(cuid())
+    chatId    String
+    text      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    fromGPT   Boolean  @default(false)
+    chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
 
-  @@index([text])
+    @@index([text])
 }
