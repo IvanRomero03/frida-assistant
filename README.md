@@ -20,14 +20,19 @@ If you are not familiar with the different technologies used in this project, pl
 Some of the features included in this project are:
 
 ### Authentication
+Using Azure AD for user authentication.
 
 ### Web and document scraping
+Using python scripts and APIs to retrieve text from web links and documents.
 
 ### Semantic search
+Using embeddings to analyze texts and do a semantic search.
 
 ### Context injection
+Analyze large texts of information using vector and embedding technologies, also taking advantage of OpenAI chats.
 
 ### Text to speech
+Implemented AWS Polly to transform text into speech for more users to use the platform.
 
 
 # Proyect structure
@@ -37,5 +42,5 @@ Some of the features included in this project are:
 | --- | --- | --- |
 | Iván Romero | [@IvanRomero03](https://github.com/IvanRomero03) | i.wells.ar@gmail.com |
 | Alejandra Coeto | [@Ale-Coeto](https://github.com/AleCoeto) | alecoeto@hotmail.com|
-| Diego Hernández |[@Diego-HC](https://github.com/Diego-HC) | |
+| Diego Hernández |[@Diego-HC](https://github.com/Diego-HC) | diego.hdz.cadena@gmail.com|
 | Alexis Chapa |[@Chapa-1810](https://github.com/Chapa-1810) | |
