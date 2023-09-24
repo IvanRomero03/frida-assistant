@@ -5,6 +5,7 @@ import { SlDocs } from "react-icons/sl";
 import { BsChatRight } from "react-icons/bs";
 import { Formik, Form, Field } from "formik";
 import { api } from "rbrgs/utils/api";
+import { useSession } from "next-auth/react";
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -18,9 +19,11 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
   const { mutateAsync: createDocument } = api.docs.create.useMutation({});
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [filename, setFilename] = useState<string>("");
+  const {data:session} = useSession();
     
-  const handleUpload = async ({link, text}: {link: string?, text: string?}) => {
+  const handleUpload = async ({link, text}: {link: string | undefined, text: string | undefined}) => {
     // upload to database using filename and appending gs://frida_file_bucket
+    console.log(option, filename, link, text, inputRef.current?.files?.[0]);
     if (option == "PDF") {
       if (!inputRef.current?.files?.[0]) return;
       const file = inputRef.current?.files?.[0];
@@ -53,10 +56,10 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
         userId: session?.user?.id!,
         link: link,
       });
-    } else if (option == "TEXT" && inputText != "") {
+    } else if (option == "TEXT" && text != "") {
       createDocument({
         name: "test",
-        text: text, 
+        text: text!, 
         userId: session?.user?.id!,
         link: "",
       });
@@ -91,11 +94,11 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
 
         <div className="flex w-full pr-5">
           <Formik
-            initialValues={{ link: "", text: "" }}
+            initialValues={{ link: "", text: "", file: ""}}
             onSubmit={async (values, actions) => {
               console.log(values);
               actions.setSubmitting(true);
-              handleUpload({link: link, text: text });
+              handleUpload({link: values.link, text: values.text });
               // await createDocument({ ...values, name: "test" });
               // wait 500ms before submitting
               actions.setSubmitting(false);
@@ -127,6 +130,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
                           Select File
                         </label>
                         <input
+                          name="file"
                           id="file_upload"
                           className="hidden"
                           type="file"
@@ -171,3 +175,4 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
 };
 
 export default UploadModal;
+                                    
