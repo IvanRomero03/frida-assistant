@@ -80,8 +80,7 @@ model DocSource {
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     name      String
     text      String
-    fileLink  String?
-    webLink   String?
+    link  String?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
