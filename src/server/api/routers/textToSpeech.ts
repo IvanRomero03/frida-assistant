@@ -36,7 +36,7 @@ export const textToSpeechRouter = createTRPCRouter({
                     const result = await polly.synthesizeSpeech(params).promise();
 
                     if (result.AudioStream) {
-                        console.log(result.AudioStream)
+                        //console.log(result.AudioStream)
                         const response = result.AudioStream.toString('base64')
                         
                         return response

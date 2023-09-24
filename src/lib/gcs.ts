@@ -6,6 +6,8 @@ const storage = new Storage({
 
 const bucket = storage.bucket(process.env.GCS_BUCKET as string);
 
+const destFileName = '';
+
 export const createWriteStream = (filename: string, contentType?: string) => {
     const ref = bucket.file(filename);
 
@@ -16,3 +18,19 @@ export const createWriteStream = (filename: string, contentType?: string) => {
 
     return stream;
 };
+
+export const downloadFile = async (filename: string) => {
+    const options = {
+        destination:destFileName ,
+      };
+    // Downloads the file into a buffer in memory.
+    const contents = await storage.bucket(process.env.GCS_BUCKET as string).file(filename).download(options);
+  
+      
+    console.log(
+        `gs://${process.env.GCS_BUCKET as string}/${filename} downloaded to ${destFileName}.`
+      );
+
+    return contents;
+  };
+  
