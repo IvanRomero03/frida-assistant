@@ -2,6 +2,7 @@ import { exampleRouter } from "rbrgs/server/api/routers/example";
 import { chatsRouter } from "./routers/chats";
 import { docsRouter } from "./routers/docs";
 import { createTRPCRouter } from "rbrgs/server/api/trpc";
+import { textToSpeechRouter } from "./routers/textToSpeech";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   example: exampleRouter,
   chats: chatsRouter,
   docs: docsRouter,
+  textToSpeech: textToSpeechRouter,
 });
 
 // export type definition of API

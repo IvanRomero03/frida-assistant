@@ -18,6 +18,7 @@ const DocCard = ({ title, summary, id }: { title: string; summary: string, id: s
         <h3 className="font-bold">{title}</h3>
         <p className="row-span-4">{summary}</p>
       </Link>
+      
     </>
   );
 };
