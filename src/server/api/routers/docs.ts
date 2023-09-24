@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createTRPCRouter, protectedProcedure } from "rbrgs/server/api/trpc";
 import { z } from "zod";
 
@@ -24,13 +25,14 @@ export const docsRouter = createTRPCRouter({
 
   create: protectedProcedure
     .input(z.object({ userId: z.string(), name: z.string(), text: z.string(), link: z.string().optional() }))
-    .mutation(({ ctx, input }) => {
+.mutation(({ ctx, input }) => {
+
       return ctx.db.docSource.create({
         data: {
           name: input.name,
           text: input.text,
           userId: ctx.session.user.id,
-          link: input.link,
+          webLink: input.link,
         },
       });
     }),

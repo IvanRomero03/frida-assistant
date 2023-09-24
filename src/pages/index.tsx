@@ -1,9 +1,19 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: sessionData } = useSession();
+  const router = useRouter()
+  const session  = useSession();
+
+  useEffect(() => {
+    if (session?.status === 'authenticated') {
+      router.push('/dashboard');
+    }
+  }, [session?.status, router]);
 
   return (
     <>

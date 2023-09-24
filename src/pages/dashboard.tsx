@@ -43,7 +43,7 @@ const Dashboard: NextPage = () => {
 
     return (
         <>
-            <MainButtons variant={variant} onClick={handleNewChat} />
+            <MainButtons variant={variant} onClick={chatName == "" ? handleNewChat : toggleVariant} />
             <button className="ml-4 mt-4 fixed w-36 z-50 hover:bg-gray-200 flex p-2 ring-1 ring-gray-500 rounded-sm mb-6 " onClick={handleNewChat} >
                 <AiOutlinePlus className="self-center mr-2 z-1" />
                 <div>  New Chat </div>

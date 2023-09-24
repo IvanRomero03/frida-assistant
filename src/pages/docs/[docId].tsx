@@ -47,6 +47,31 @@ export default function Doc() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const doc = api.docs.getOne.useQuery({ id: docId });
 
+  const [audioUrl, setAudioUrl] = useState();
+  const { data } = api.textToSpeech.talk.useQuery({ text: doc.data?.text || "No info found" })
+
+  const playAudio = () => {
+    const audioBlob = base64ToBlob(data);
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audioElement = new Audio(audioUrl);
+    audioElement.play();
+  };
+
+  // Function to convert base64 to Blob
+  const base64ToBlob = (data: any) => {
+    const byteCharacters = atob(data);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: 'audio/mpeg' }); // Adjust the type as per your audio format
+  };
+
+
+
   // const docData = doc.data;
   const docData = {
     name: doc.data?.name,
@@ -163,6 +188,7 @@ export default function Doc() {
             Go to website
           </a>
         )}
+        <button className="bg-gray-200 py-1 px-3 rounded-md mt-3" onClick={playAudio}>Play Audio</button>
       </div>
     </>
   );
