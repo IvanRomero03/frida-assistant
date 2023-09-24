@@ -19,7 +19,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
     const inputRef = useRef<HTMLInputElement | null>(null)
     const [option, setOption] = useState<variant>("LINK");
     const [filename, setFilename] = useState<string>("");
-    const {mutateAsync} = api.docs.create.useQuery();
+    // const {mutateAsync} = api.docs.create.useQuery();
 
     const { handleSubmit, register, setValue, formState: { errors } } = useForm<FieldValues>({
         defaultValues: {

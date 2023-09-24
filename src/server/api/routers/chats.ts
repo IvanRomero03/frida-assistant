@@ -12,6 +12,27 @@ export const chatsRouter = createTRPCRouter({
       });
     }),
 
+  getChatMessages: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.message.findMany({
+        where: {
+          chatId: input.id,
+        },
+      });
+    }),
+
+  createMessage: protectedProcedure
+    .input(z.object({ chatId: z.string(), text: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.message.create({
+        data: {
+          text: input.text,
+          chatId: input.chatId,
+        },
+      });
+    }),
+
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
@@ -22,6 +43,7 @@ export const chatsRouter = createTRPCRouter({
       });
     }),
 
+
   create: protectedProcedure
     .input(z.object({ userId: z.string(), name: z.string() }))
     .mutation(({ ctx, input }) => {
@@ -29,6 +51,19 @@ export const chatsRouter = createTRPCRouter({
         data: {
           name: input.name,
           userId: input.userId,
+        },
+      });
+    }),
+
+  update: protectedProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.db.chat.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
         },
       });
     }),

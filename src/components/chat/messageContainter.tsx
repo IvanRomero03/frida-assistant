@@ -1,9 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Message from "./message"
+import { api } from "rbrgs/utils/api";
+import { FiEdit } from "react-icons/fi";
+import EditModal from "../modals/editModal";
+
+interface MessageProps {
+    chatId: string;
+    chatName: string;
+}
+const MessageContainer: React.FC<MessageProps> = ({ chatId, chatName }) => {
+    const { data: messages } = api.chats.getChatMessages.useQuery({
+        id: chatId || ""
+    });
 
 
-const MessageContainer = () => {
-    const messages = [{ message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }, { message: "hi 22de", date: 20/20/2000, sentByGTP: true }, { message: "hi", date: 20/20/2000, sentByGTP: true }, { message: "hi 22de", date: 20/20/2000, sentByGTP: false }]
+    const [open, setOpen] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -11,12 +22,19 @@ const MessageContainer = () => {
 
     }, []);
 
+    const editName = () => {
+
+    }
 
     return (
         <>
+            <EditModal isOpen={open} onClose={() => setOpen(false)} onEdit={editName} chatId={chatId}/>
             <div className="h-full pr-32 pl-10 pb-10 bg-gray-100 overflow-y-auto">
                 <div className="font-bold text-gray-900">
-                    Chat
+                    {messages ? chatName : 'Chat'}
+                    <button className="ml-2" onClick={() => setOpen(true)}>
+                        <FiEdit />
+                    </button>
                 </div>
 
                 <div className="text-gray-500 pb-1">
@@ -24,8 +42,8 @@ const MessageContainer = () => {
                 </div>
 
                 <div className="h-full mb-10 flex-col pb-10">
-                    {messages.map((message, key) => (
-                        <Message message={message.message} key={key} date={message.date} sentByGTP={message.sentByGTP} />
+                    {messages?.map((message, key) => (
+                        <Message message={message.text} key={key} date={message.createdAt} sentByGTP={message.fromGPT} />
                     ))}
                 </div>
 
