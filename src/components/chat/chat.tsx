@@ -1,18 +1,21 @@
 import SearchBar from "../searchBar"
+import Message from "./message"
+import MessageContainer from "./messageContainter"
 
 
 const Chat = () => {
     return (
-        <div>
-            <div className="font-bold text-gray-900">
-                Chat
-            </div>
-            <div className="text-gray-500">
-                Chat bot for queries. Find, summarize, anilize information and more.
-            </div>
-            <div className="fixed w-10/12  bottom-10">
+        <div className="mb-20 flex flex-col h-screen pb-60">
+
+
+            <MessageContainer />
+
+            <div className="fixed w-10/12 bottom-10">
                 <SearchBar />
             </div>
+
+
+
         </div>
     )
 }

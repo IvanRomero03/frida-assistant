@@ -19,7 +19,7 @@ const Dashboard: NextPage = () => {
             <MainButtons variant={variant} onClick={toggleVariant} />
 
             <div className="bg-gray-100 h-screen w-full flex overflow-hidden">
-                <PromptHistory />
+                <PromptHistory handleClick={() => setSelected("CHAT")}/>
 
                 <div className="h-full pl-10 mt-32 w-full">
                     {variant == 'DOCS' ? <Documents /> : <Chat />}
