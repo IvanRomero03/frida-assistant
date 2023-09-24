@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import Link from "next/link";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -33,18 +34,25 @@ export const options = {
   },
 };
 
+interface DocProps {
+  docId: string;
+  text: string;
+  webLink?: string;
+  fileLink?: string;
+}
 export default function Doc() {
   const router = useRouter();
   const { docId } = router.query as { docId: string };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const doc = api.docs.getOne.useQuery({ id: docId });
+
   // const docData = doc.data;
   const docData = {
-    name: "Test",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.\nUt enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?",
-    webLink: "https://www.google.com",
-    fileLink: undefined,
+    name: doc.data?.name,
+    text: doc.data?.text || "No information was found",
+    webLink: doc.data?.webLink,
+    fileLink: doc.data?.fileLink,
   };
 
   const [hoveredParagraph, setHoveredParagraph] = useState<number | undefined>(
@@ -86,8 +94,14 @@ export default function Doc() {
 
   return (
     <>
-      <div className="flex flex-col items-center bg-gray-100">
-        <h1 className="my-8 text-3xl font-bold">Doc {docData?.name}</h1>
+      <Link
+        href={`/dashboard/`}
+        className="fixed top-4 left-4 h-8 w-auto px-4 p-1 hover:text-gray-400 ring-1 ring-gray-800"
+      >
+        <h3 className="font-bold">Back</h3>
+      </Link>
+      <div className="flex flex-col items-center h-screen bg-gray-100">
+        <h1 className="my-8 text-3xl font-bold"> {docData?.name}</h1>
         <div className="flex w-full flex-row justify-start">
           <div className="flex max-w-4xl flex-col justify-evenly">
             {paragraphs?.map((paragraph, index) => (

@@ -23,7 +23,7 @@ const Documents = () => {
                 <UploadButton modal />
             </div>
 
-            <SearchBar search />
+            <SearchBar search chatId="" />
             <DocGrid />
 
 

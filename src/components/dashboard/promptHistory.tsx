@@ -1,37 +1,41 @@
 
 import { useSession } from "next-auth/react";
+import { api } from "rbrgs/utils/api";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsChatRight } from "react-icons/bs"
 
 interface PromptHistoryProps {
-    handleClick: () => void;
+    handleClick: any;
 }
 
 const PromptHistory: React.FC<PromptHistoryProps> = ({ handleClick }) => {
-    const prompts = ["Search for word in text", "IDK", "Count words"]
+    const { data: userId } = useSession();
+    const { data: chats } = api.chats.getAll.useQuery({
+        id: userId?.user.id || ""
+    });
+
     const { data: sessionData } = useSession();
 
 
+
     return (
-        <div className="bg-white w-52 h-screen py-4 px-6">
-            <div className="h-full flex flex-col justify-between">
+        <div className="bg-white w-52 h-screen pt-20 py-4 px-6">
+            
+            <div className="h-full flex flex-col justify-between ">
                 <div>
-                    <button className="flex p-2 ring-1 ring-gray-500 w-full rounded-sm mb-6" onClick={handleClick}>
-                        <AiOutlinePlus className="self-center mr-2" />
-                        <div>
-                            New Chat
-                        </div>
-                    </button>
+
+                    
+
                     <div className="text-gray-500">
                         Prompt History
                     </div>
 
                     <div className="my-5 text-gray-800 pr-1 overflow-hidden">
-                        {prompts.map((prompt, key) => (
-                            <button key={key} className="flex flex-row gap-4 my-2" onClick={handleClick}>
+                        {chats?.map((prompt, key) => (
+                            <button key={key} className="flex flex-row gap-4 my-2" onClick={() => handleClick(prompt.id, prompt.name)}>
                                 <BsChatRight className="self-center" />
                                 <div className="overflow-hidden whitespace-nowrap hover:text-gray-500">
-                                    {prompt}
+                                    {prompt.name}
                                 </div>
                             </button>
                         ))}

@@ -15,6 +15,14 @@ interface UploadModalProps {
 type variant = "LINK" | "PDF" | "TEXT";
 
 const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
+
+   
+   
+   
+  
+
+   
+
   const [option, setOption] = useState<variant>("LINK");
   const { mutateAsync: createDocument } = api.docs.create.useMutation({});
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -47,6 +55,7 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose }) => {
             userId: session?.user?.id!,
             link: `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${filename}`,
           });
+
         }
       });
     } else if (option == "LINK") {
