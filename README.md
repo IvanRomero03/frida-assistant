@@ -2,10 +2,7 @@
 Dynamic web app 
 
 # Tech Stack
-
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+This platform allows users to make their own cloud data bases, where they can store different kinds of sources that are then analyzed and stored. This way, users can semantically search for information and interact with a chatbot to find the most relevant data. In addition, we implemented a text to speech functionality to allow more people to use this technologies.
 
 - [FRIDA](https://github.com/Fridaplatform/SofttekLLMSDK)
 - [AWS Polly](https://aws.amazon.com/polly/)
