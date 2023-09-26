@@ -7,6 +7,13 @@ We try to keep this project as simple as possible, so you can start with just th
 
 If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
+- [FRIDA](https://github.com/Fridaplatform/SofttekLLMSDK)
+- [AWS Polly](https://aws.amazon.com/polly/)
+- [Google Cloud](https://cloud.google.com/?utm_source=google&utm_medium=cpc&utm_campaign=latam-MX-all-es-dr-BKWS-all-all-trial-e-dr-1605194-LUAC0010195&utm_content=text-ad-none-any-DEV_c-CRE_512379899402-ADGP_Hybrid+%7C+BKWS+-+EXA+%7C+Txt+%7E+GCP_General-KWID_43700062784667416-kwd-301173107424&utm_term=KW_google+cloud-ST_Google+Cloud&gclid=Cj0KCQjwvL-oBhCxARIsAHkOiu1c_NQr-Ll8wq6pQwpeUyWfXtvhIllbuQYKpGLpkqls-4w21qstr4EaArnHEALw_wcB&gclsrc=aw.ds&hl=en)
+- [Supabase](https://supabase.com/)
+- [AzureAD](https://azure.microsoft.com/es-mx/products/active-directory)
+- [React.js](https://es.react.dev/)
+- [PostgreSQL](https://www.postgresql.org/)
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -36,7 +43,8 @@ Implemented AWS Polly to transform text into speech for more users to use the pl
 
 #### Some of the features implemented depend on Python services. These services are stored in this repo: [Frida Assistant Services](https://github.com/IvanRomero03/frida-assistant-services)
 
-# Proyect structure
+# Check it out
+[DevPost submission](https://devpost.com/software/frida-assistant)
 
 # Development Team
 | Name | Github | Email |
